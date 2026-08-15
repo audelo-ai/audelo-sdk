@@ -1,0 +1,63 @@
+{
+  "name": "@audelo/sdk",
+  "version": "0.1.0",
+  "description": "Official Node/TypeScript client SDK for the Audelo public API — AI voice agents, calls, transcripts, analytics, webhooks, and phone number provisioning.",
+  "keywords": [
+    "audelo",
+    "voice-agent",
+    "ai-phone-agent",
+    "sdk",
+    "twilio",
+    "livekit"
+  ],
+  "homepage": "https://github.com/audelo-ai/audelo-sdk",
+  "bugs": "https://github.com/audelo-ai/audelo-sdk/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/audelo-ai/audelo-sdk.git"
+  },
+  "license": "MIT",
+  "author": "Audelo Pty Ltd",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./webhooks": {
+      "types": "./dist/webhooks.d.ts",
+      "import": "./dist/webhooks.js",
+      "require": "./dist/webhooks.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts src/webhooks.ts --format esm,cjs --dts --clean",
+    "typecheck": "tsc --noEmit",
+    "typecheck:examples": "tsc --noEmit -p tsconfig.examples.json",
+    "lint": "eslint src examples",
+    "test": "node --test --import tsx tests/*.test.ts",
+    "prepublishOnly": "npm run typecheck && npm run build"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.14.0",
+    "eslint": "^9.9.0",
+    "express": "^4.19.2",
+    "tsup": "^8.2.4",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^8.3.0"
+  }
+}
