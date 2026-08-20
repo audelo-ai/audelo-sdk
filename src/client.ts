@@ -121,14 +121,35 @@ export interface CallDetail {
   [key: string]: unknown;
 }
 
-export interface ListCallsParams {
+/**
+ * Query parameters for `calls.list()`.
+ *
+ * Deliberately a `type`, not an `interface`, and deliberately WITHOUT an index signature.
+ * The index signature this replaced accepted any string key and forwarded it to the query
+ * string, so `calls.list({ limit: 3 })` type-checked, was sent, was ignored by the server,
+ * and returned all 50 rows — a typed client advertising an option it cannot honour, which is
+ * worse than an untyped fetch because the type invites trust. `GET /calls` and `GET /agents`
+ * are fixed at `->paginate(50)` server-side (verified in PublicApiController, not inferred);
+ * `page` is the only navigation parameter, and it is right here.
+ *
+ * The same signature also silently swallowed near-miss typos — `agentId` instead of
+ * `agent_id` was accepted, sent, and ignored. Both are now compile errors.
+ *
+ * A `type` alias rather than an `interface` because only type aliases get the implicit index
+ * signature that keeps this assignable to the `Record<string, string | number | undefined>`
+ * the request helper takes; an interface would not compile there.
+ *
+ * NOTE: `numbers.available()` has a REAL `limit` (validated `min:1|max:50`, default 20 in
+ * NumberController) — that one is genuine and must not be removed by analogy with this.
+ */
+export type ListCallsParams = {
   agent_id?: number;
   status?: string;
   from?: string;
   to?: string;
+  /** 1-based page number. Page size is fixed at 50 by the API. */
   page?: number;
-  [key: string]: string | number | undefined;
-}
+};
 
 export interface TranscriptTurn {
   timestamp: number;
