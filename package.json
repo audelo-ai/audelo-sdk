@@ -44,7 +44,7 @@
   },
   "scripts": {
     "build": "tsup src/index.ts src/webhooks.ts --format esm,cjs --dts --clean",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.tests.json",
     "typecheck:examples": "tsc --noEmit -p tsconfig.examples.json",
     "lint": "eslint src examples",
     "test": "node --test --import tsx tests/*.test.ts",
